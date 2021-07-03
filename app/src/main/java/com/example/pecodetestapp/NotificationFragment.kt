@@ -25,6 +25,7 @@ class NotificationFragment(
     private val NOTIFICATION_ID = position
 
     private lateinit var manager: NotificationManager
+    private lateinit var pagerAdapter: MainActivity.ScreenSlidePagerAdapter
 
     private var _binding: FragmentNotificationBinding? = null
     private val binding get() = _binding!!
@@ -44,7 +45,7 @@ class NotificationFragment(
 
         val notificationManager = NotificationManagerCompat.from(requireContext())
 
-        val pagerAdapter = (activity as MainActivity).pagerAdapter
+        pagerAdapter = (activity as MainActivity).pagerAdapter
 
         binding.btnAdd.setOnClickListener {
             val pagerPosition = pagerAdapter.list.maxOf { it.position } + 1
@@ -58,6 +59,8 @@ class NotificationFragment(
                 pagerAdapter.list.remove(this)
                 pagerAdapter.notifyDataSetChanged()
             }
+
+            manager.cancel(NOTIFICATION_ID)
         }
 
         binding.textView.text = position.toString()
